@@ -1,0 +1,9 @@
+# Beispiel, ohne Zugangsdaten. Die echte Datei gehoert NICHT ins Repository.
+# Erzeugen: sudo rclone config --config /srv/ipa-ocr/rclone/rclone.conf
+# Die Anmeldung laeuft headless: "rclone authorize dropbox" auf einem Rechner
+# mit Browser ausfuehren und das Token am Pi einfuegen.
+[dropbox]
+type = dropbox
+# client_id = <eigene Dropbox-App, optional>
+# client_secret = <eigene Dropbox-App, optional>
+token = {"access_token":"...","token_type":"bearer","refresh_token":"...","expiry":"..."}
