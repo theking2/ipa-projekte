@@ -37,6 +37,10 @@ sudo rclone ls "dropbox:IPA 2027" --config /srv/ipa-ocr/rclone/rclone.conf | hea
 
 Danach `compose.yml` als Stack deployen (Portainer: Stacks, Add stack, Web editor) oder per `docker compose up -d`. Das Image muss auf derselben Docker-Engine liegen, auf der der Stack laeuft.
 
+## Zeitlicher Ablauf
+
+Eingang in Dropbox, Pull durch `ipa-sync` (alle 10 Minuten), OCR durch `ipa-ocr` (alle 5 Minuten, ca. 20 Sekunden pro Datei), Upload der `-OCR.pdf` im naechsten Sync-Durchlauf. Insgesamt spaetestens ca. 25 Minuten. Eine nachgelagerte Pruefung sollte deshalb erst am Abend laufen und Dateien ohne `-OCR.pdf` als «wartet auf OCR» fuehren statt als Mangel.
+
 ## Betrieb
 
 ```bash
@@ -55,6 +59,9 @@ docker logs --tail 20 ipa-sync
 - **Pull ueberschreibt lokale OCR-Dateien:** Ohne `--update` ersetzt `rclone copy` eine lokal erzeugte `-OCR.pdf` durch eine abweichende Dropbox-Version.
 - **`deploy.resources.limits` greift nicht:** `mem_limit` auf Service-Ebene verwenden. Pruefen: `docker inspect ipa-ocr --format '{{.HostConfig.Memory}}'` liefert `2147483648`.
 - **Portainer-Log von `ipa-ocr` leer:** Das Skript schreibt nur nach `/logs/ocr.log`. Dafuer gibt es `ipa-log`.
+- **`docker stop ipa-sync` endet mit Exit 137:** PID 1 ist eine Shell-Schleife und reagiert nicht auf SIGTERM. Unkritisch.
+- **Verirrte Test-Container:** `docker run ... &` im Vordergrund-Terminal liefert einen Container mit Zufallsnamen. Mit `docker ps` finden und `docker kill <id>` beenden.
+- **Nachweis nach dem Start:** Die lokale `-OCR.pdf` muss nach einem Sync-Durchlauf unveraendert bleiben (Groesse, Zeitstempel), sonst fehlt `--update`.
 - **`docker build` aendert laufende Container nicht:** Erst die Stack-Aenderung auf den neuen Tag erstellt den Container neu.
 
 ## Offen vor dem Produktivbetrieb
