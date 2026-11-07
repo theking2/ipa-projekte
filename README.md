@@ -41,6 +41,17 @@ flowchart LR
 - **Deutsch:** Tesseract mit `deu` und `eng`, Schweizer Schreibung.
 - **Läuft unbeaufsichtigt:** Schleifen im Abstand von 5 Minuten (OCR) und 10 Minuten (Sync), Neustart nach Ausfall, Healthcheck für die Übersicht.
 
+## Zusammenspiel mit der Vorprüfung
+
+Die tägliche Vorprüfung der Eingaben läuft abends, damit tagsüber eingegangene Scans bereits umgewandelt sind (Eingang bis `-OCR.pdf` in Dropbox: spätestens ca. 25 Minuten). Eine Eingabe ohne Text wird erst geprüft, wenn ihre `-OCR.pdf` vorliegt, und ersetzt dann das Original:
+
+- **Text vorhanden:** normale Prüfung.
+- **Kein Text, `-OCR.pdf` vorhanden:** Prüfung der OCR-Fassung.
+- **Kein Text, noch keine `-OCR.pdf`:** Status «Wartet auf OCR», keine Bewertung.
+- **Beim nächsten Lauf weiterhin keine `-OCR.pdf`:** Meldung «OCR fehlgeschlagen», manuelle Prüfung.
+
+Die Vorprüfung selbst liest den Text über den Dropbox-Zugang und ist nicht Teil dieses Dienstes. Die Standortangaben oben gelten für den OCR-Schritt.
+
 ## Inhalt
 
 | Pfad | Zweck |
