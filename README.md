@@ -2,7 +2,15 @@
 
 Werkzeuge rund um die IPA-Eingaben (individuelle Produktivarbeit, Mediamatiker/in EFZ).
 
-Aktuell enthalten: ein **lokaler OCR-Dienst**, der Eingaben ohne Textebene in durchsuchbare PDFs umwandelt. Die Verarbeitung läuft vollständig auf einem eigenen Gerät. Eingaben enthalten Betriebsinterna und Personendaten und gehören nicht zu externen Diensten.
+Aktuell enthalten: ein **lokaler OCR-Dienst**, der Eingaben ohne Textebene in durchsuchbare PDFs umwandelt. Die Verarbeitung läuft vollständig auf einem **privat betriebenen Server in der Schweiz**. Eingaben enthalten Betriebsinterna und Personendaten und gehören nicht zu externen Diensten.
+
+## Datenverarbeitung und Standort
+
+- **Privater Server in der Schweiz:** Die gesamte OCR-Verarbeitung läuft auf einem privat betriebenen Server in der Schweiz.
+- **Keine Drittdienste für die Umwandlung:** Kein Cloud-OCR, kein Online-Konverter, kein Upload der Inhalte zu externen Anbietern.
+- **Kein Netzwerk beim Verarbeiten:** Der OCR-Container läuft mit `network_mode: none` und kann keine Daten versenden.
+- **Keine zusätzlichen Kopien:** Der Dienst legt Daten nur auf dem eigenen Server und im bestehenden Dropbox-Ordner ab. Die einzige Verbindung nach aussen ist `ipa-sync` zwischen Server und diesem Ordner.
+- **Dropbox:** Der Speicherort der Dropbox-Daten hängt vom Dropbox-Konto ab und gehört nicht zu diesem Dienst. Wer Daten ausschliesslich in der Schweiz oder der EU halten muss, prüft den Speicherort des Kontos beim Anbieter.
 
 ## Das Problem
 
